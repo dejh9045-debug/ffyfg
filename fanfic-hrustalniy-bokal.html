@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Хрустальный бокал / YFG</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /*----- базовые переменные (светлая тема по умолчанию) -----*/
+        :root {
+            --bg: #ffffff;
+            --text: #1e1c19;
+            --card: #faf8f5;
+            --border: #e2dbd1;
+            --accent: #8b7355;
+            --accent-hover: #6d5a44;
+            --progress: #c0a67a;
+        }
+
+        body.dark {
+            --bg: #1a1a1c;
+            --text: #e2e0db;
+            --card: #262528;
+            --border: #3e3c3a;
+            --accent: #b89a6e;
+            --accent-hover: #d0b48a;
+            --progress: #b89a6e;
+        }
+
+        body.sepia {
+            --bg: #faf0e6;
+            --text: #4a2c14;
+            --card: #fef7e8;
+            --border: #d6c5b0;
+            --accent: #8b5e3c;
+            --accent-hover: #6b451f;
+            --progress: #c98f5c;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            line-height: 1.6;
+            transition: background 0.2s, color 0.2s;
+            padding-bottom: 4rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1.2rem;
+        }
+
+        /* шапка */
+        .header {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0 0.8rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(var(--bg-rgb), 0.9);
+        }
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 500;
+            text-align: center;
+            color: var(--text);
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 5px;
+            margin-left: 1rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        /* панель настроек */
+        .settings-bar {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 0.6rem 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+        .settings-group {
+            display: flex;
+            gap: 0.4rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .settings-group button, .settings-group select {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 0.2rem 0.6rem;
+            border-radius: 30px;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .theme-btn, .font-btn {
+            background: var(--bg);
+        }
+        .theme-btn.active, .font-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        /* строка прогресса + закладка */
+        .progress-area {
+            margin: 0 1rem 1rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .progress-container {
+            flex: 1;
+            height: 4px;
+            background: var(--border);
+            border-radius: 4px;
+        }
+        .progress-fill {
+            height: 4px;
+            background: var(--progress);
+            width: 0%;
+            border-radius: 4px;
+        }
+        .bookmark-btn {
+            background: var(--bg);
+            border: 1px solid var(--accent);
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            color: var(--accent);
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: 0.1s;
+        }
+        .bookmark-btn:hover {
+            background: var(--accent);
+            color: var(--bg);
+        }
+        .resume-msg {
+            text-align: center;
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+        }
+        .resume-btn {
+            background: var(--accent);
+            border: none;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        /* оглавление */
+        .toc {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+        .toc h3 {
+            margin-bottom: 0.7rem;
+            font-weight: 500;
+        }
+        .toc a {
+            color: var(--accent);
+            text-decoration: none;
+            display: inline-block;
+            margin-right: 1rem;
+            margin-bottom: 0.4rem;
+        }
+
+        /* текст фанфика */
+        .fic-content {
+            font-size: 1rem;
+            margin-bottom: 3rem;
+        }
+        .chapter {
+            margin-bottom: 3rem;
+        }
+        .chapter h2 {
+            font-weight: 500;
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--accent);
+            padding-left: 0.7rem;
+        }
+        p {
+            margin-bottom: 0.8rem;
+        }
+
+        /* заметки */
+        .note-marker {
+            background-color: #f3e0a8;
+            color: #3e2a1a;
+            font-size: 0.7rem;
+            border-radius: 30px;
+            padding: 0px 6px;
+            margin-left: 6px;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        /* кнопка наверх */
+        .go-top {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 0.4rem 0.9rem;
+            cursor: pointer;
+            display: none;
+            font-size: 0.8rem;
+        }
+
+        /* плеер — аккуратный */
+        .music-player {
+            position: fixed;
+            bottom: 1rem;
+            left: 1rem;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            padding: 0.3rem 1rem;
+            font-size: 0.75rem;
+            display: flex;
+            gap: 0.6rem;
+            align-items: center;
+            z-index: 99;
+            color: var(--text);
+        }
+        .music-player button {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            color: var(--accent);
+            padding: 0;
+        }
+
+        @media (max-width: 550px) {
+            .settings-bar { gap: 0.6rem; }
+            .progress-area { flex-direction: column; align-items: stretch; }
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="container">
+        <h1>Хрустальный бокал</h1>
+        <a href="index.html" class="back-link">← На главную</a>
+    </div>
+</div>
+
+<div class="settings-bar">
+    <div class="settings-group">Тема:
+        <button class="theme-btn" data-theme="light">Светлая</button>
+        <button class="theme-btn" data-theme="dark">Тёмная</button>
+        <button class="theme-btn" data-theme="sepia">Сепия</button>
+    </div>
+    <div class="settings-group">Шрифт:
+        <button class="font-btn" data-font="sans">Sans</button>
+        <button class="font-btn" data-font="serif">Serif</button>
+        <button class="font-btn" data-font="georgia">Georgia</button>
+    </div>
+    <div class="settings-group">Размер:
+        <button id="fontMinus">A-</button>
+        <button id="fontPlus">A+</button>
+    </div>
+</div>
+
+<div class="progress-area">
+    <div class="progress-container"><div class="progress-fill" id="progressFill"></div></div>
+    <button class="bookmark-btn" id="bookmarkBtn">Сохранить закладку</button>
+</div>
+<div class="resume-msg" id="resumeMsg"></div>
+
+<div class="container">
+    <div class="toc">
+        <h3>Оглавление</h3>
+        <a href="#chapter1">Глава 1</a>
+        <a href="#chapter2">Глава 2</a>
+        <a href="characters.html">Персонажи (страница)</a>
+    </div>
+
+    <div class="fic-content" id="ficContent">
+        <div id="chapter1" class="chapter">
+            <h2>Глава 1</h2>
+            <p>Это пример текста для первой главы. Здесь будет твой фанфик. Ты можешь выделять любые фразы — появится кнопка для заметок.</p>
+            <p>Lorem ipsum odor amet, consectetuer adipiscing elit. Himenaeos suspendisse blandit ac luctus nisl nostra.</p>
+        </div>
+        <div id="chapter2" class="chapter">
+            <h2>Глава 2</h2>
+            <p>Продолжение истории. Шрифты: Sans, Serif и Georgia. Полоска прогресса работает.</p>
+        </div>
+    </div>
+</div>
+
+<button class="go-top" id="goTop">↑ Наверх</button>
+
+<div class="music-player">
+    <button id="playPauseBtn">▶</button>
+    <span>фоновая музыка</span>
+</div>
+
+<script>
+    // 1. тема, шрифт, размер
+    function applyTheme(theme) {
+        document.body.classList.remove('dark', 'sepia');
+        if (theme === 'dark') document.body.classList.add('dark');
+        if (theme === 'sepia') document.body.classList.add('sepia');
+        localStorage.setItem('yfg_theme', theme);
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.theme === theme);
+        });
+    }
+    function applyFont(font) {
+        let fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif';
+        if (font === 'serif') fontFamily = 'Georgia, "Times New Roman", serif';
+        if (font === 'georgia') fontFamily = 'Georgia, serif';
+        document.body.style.fontFamily = fontFamily;
+        localStorage.setItem('yfg_font', font);
+        document.querySelectorAll('.font-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.font === font);
+        });
+    }
+    let currentFontSize = 18;
+    function setFontSize(size) {
+        currentFontSize = Math.min(28, Math.max(14, size));
+        document.querySelector('.fic-content').style.fontSize = currentFontSize + 'px';
+        localStorage.setItem('yfg_fontsize', currentFontSize);
+    }
+
+    const savedTheme = localStorage.getItem('yfg_theme') || 'light';
+    applyTheme(savedTheme);
+    const savedFont = localStorage.getItem('yfg_font') || 'sans';
+    applyFont(savedFont);
+    const savedSize = parseInt(localStorage.getItem('yfg_fontsize'));
+    if (!isNaN(savedSize)) setFontSize(savedSize);
+    else setFontSize(18);
+
+    document.querySelectorAll('.theme-btn').forEach(btn => btn.addEventListener('click', () => applyTheme(btn.dataset.theme)));
+    document.querySelectorAll('.font-btn').forEach(btn => btn.addEventListener('click', () => applyFont(btn.dataset.font)));
+    document.getElementById('fontPlus').addEventListener('click', () => setFontSize(currentFontSize + 2));
+    document.getElementById('fontMinus').addEventListener('click', () => setFontSize(currentFontSize - 2));
+
+    // прогресс
+    function updateProgress() {
+        const winScroll = window.scrollY;
+        const height = document.documentElement.scrollHeight - window.innerHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById('progressFill').style.width = scrolled + '%';
+    }
+    window.addEventListener('scroll', updateProgress);
+    window.addEventListener('resize', updateProgress);
+
+    // закладки
+    document.getElementById('bookmarkBtn').addEventListener('click', () => {
+        const scrollPos = window.scrollY;
+        localStorage.setItem('yfg_bookmark', scrollPos);
+        const msg = document.getElementById('resumeMsg');
+        msg.innerText = '✓ Закладка сохранена';
+        setTimeout(() => msg.innerText = '', 2000);
+    });
+    function restoreBookmark() {
+        const saved = localStorage.getItem('yfg_bookmark');
+        if (saved !== null) {
+            const msgDiv = document.getElementById('resumeMsg');
+            msgDiv.innerHTML = `<button class="resume-btn" id="restoreBookmarkBtn">Вернуться к закладке</button>`;
+            document.getElementById('restoreBookmarkBtn').addEventListener('click', () => {
+                window.scrollTo({ top: parseInt(saved), behavior: 'smooth' });
+            });
+        }
+    }
+    restoreBookmark();
+
+    // кнопка наверх
+    const goTopBtn = document.getElementById('goTop');
+    window.addEventListener('scroll', () => {
+        goTopBtn.style.display = window.scrollY > 300 ? 'block' : 'none';
+    });
+    goTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // плеер
+    let audio = null;
+    let isPlaying = false;
+    const playBtn = document.getElementById('playPauseBtn');
+    function initAudio() {
+        audio = new Audio('music/theme.mp3');
+        audio.loop = true;
+        audio.volume = 0.3;
+        playBtn.addEventListener('click', () => {
+            if (!audio) initAudio();
+            if (isPlaying) {
+                audio.pause();
+                playBtn.innerText = '▶';
+            } else {
+                audio.play().catch(e => console.log('autoplay blocked'));
+                playBtn.innerText = '⏸';
+            }
+            isPlaying = !isPlaying;
+        });
+    }
+    playBtn.addEventListener('click', initAudio, { once: true });
+
+    // заметки
+    function saveNote(quote, noteText) {
+        let notes = JSON.parse(localStorage.getItem('yfg_notes') || '{}');
+        const key = 'note_' + Date.now() + '_' + Math.random();
+        notes[key] = { quote: quote, text: noteText, scroll: window.scrollY };
+        localStorage.setItem('yfg_notes', JSON.stringify(notes));
+        alert('Заметка сохранена!');
+        location.reload();
+    }
+    function renderNoteMarkers() {
+        const notes = JSON.parse(localStorage.getItem('yfg_notes') || '{}');
+        const contentEl = document.getElementById('ficContent');
+        let html = contentEl.innerHTML;
+        for (let key in notes) {
+            const quote = notes[key].quote;
+            if (quote && html.includes(quote)) {
+                const marker = `<span class="note-marker" data-note="${key}" title="${notes[key].text}">📌 заметка</span>`;
+                html = html.replace(quote, quote + marker);
+            }
+        }
+        contentEl.innerHTML = html;
+        document.querySelectorAll('.note-marker').forEach(m => {
+            m.addEventListener('click', (e) => {
+                alert('Заметка: ' + (notes[m.dataset.note]?.text || '—'));
+                e.stopPropagation();
+            });
+        });
+    }
+    document.addEventListener('mouseup', function() {
+        let selection = window.getSelection();
+        let selectedText = selection.toString().trim();
+        if (selectedText.length > 0) {
+            let existing = document.getElementById('notePopup');
+            if(existing) existing.remove();
+            let popup = document.createElement('div');
+            popup.id = 'notePopup';
+            popup.innerText = '✏️ Добавить заметку';
+            popup.style.position = 'absolute';
+            popup.style.background = 'var(--accent)';
+            popup.style.color = 'white';
+            popup.style.padding = '4px 12px';
+            popup.style.borderRadius = '30px';
+            popup.style.fontSize = '0.8rem';
+            popup.style.cursor = 'pointer';
+            popup.style.zIndex = 1000;
+            const range = selection.getRangeAt(0);
+            const rect = range.getBoundingClientRect();
+            popup.style.top = (rect.top + window.scrollY - 30) + 'px';
+            popup.style.left = (rect.left + window.scrollX) + 'px';
+            document.body.appendChild(popup);
+            popup.addEventListener('click', () => {
+                let note = prompt('Введите заметку (для себя):', '');
+                if (note) saveNote(selectedText, note);
+                popup.remove();
+                selection.removeAllRanges();
+            });
+            setTimeout(() => { if(popup) popup.remove(); }, 5000);
+        }
+    });
+    renderNoteMarkers();
+</script>
+</body>
+</html>
