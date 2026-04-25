@@ -242,10 +242,16 @@
     </style>
 </head>
 <body>
+    <script>
+    // проверка пароля при входе на главную
+    if (localStorage.getItem('yfg_unlocked') !== 'true') {
+        window.location.href = 'lock.html';
+    }
+</script>
 <div class="header">
     <div class="container">
         <h1>Хрустальный бокал</h1>
-        <a href="index.html" class="back-link">← На главную</a>
+<a href="lock.html" class="back-link">← На главную</a>
     </div>
 </div>
 
