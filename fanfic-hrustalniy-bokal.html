@@ -57,7 +57,7 @@
             padding: 0 1.2rem;
         }
 
-        /* шапка */
+        /* шапка — sticky */
         .header {
             background: var(--card);
             border-bottom: 1px solid var(--border);
@@ -82,7 +82,7 @@
             font-size: 0.9rem;
         }
 
-        /* панель настроек */
+        /* панель настроек — тоже sticky */
         .settings-bar {
             background: var(--card);
             border-bottom: 1px solid var(--border);
@@ -92,7 +92,10 @@
             justify-content: center;
             gap: 1rem;
             font-size: 0.85rem;
-            margin-bottom: 1.5rem;
+            position: sticky;
+            top: 72px;
+            z-index: 99;
+            backdrop-filter: blur(10px);
         }
         .settings-group {
             display: flex;
@@ -118,17 +121,20 @@
             border-color: var(--accent);
         }
 
-        /* строка прогресса + закладка */
+        /* строка прогресса + закладка — ТОЖЕ СТИКИ */
         .progress-area {
-            margin: 0 1rem 1rem 1rem;
+            margin: 0;
+            padding: 0.5rem 1rem;
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
             gap: 1rem;
             flex-wrap: wrap;
-            background: var(--card);
-            padding: 0.5rem 1rem;
-            border-radius: 40px;
-            border: 1px solid var(--border);
+            position: sticky;
+            top: 118px;
+            z-index: 98;
+            backdrop-filter: blur(10px);
         }
         .progress-container {
             flex: 1;
@@ -151,6 +157,7 @@
             cursor: pointer;
             font-size: 0.8rem;
             transition: 0.1s;
+            white-space: nowrap;
         }
         .bookmark-btn:hover {
             background: var(--accent);
@@ -177,7 +184,7 @@
             border: 1px solid var(--border);
             border-radius: 28px;
             padding: 1rem;
-            margin-bottom: 2rem;
+            margin: 1rem 0 2rem;
         }
         .toc h3 {
             margin-bottom: 0.7rem;
@@ -209,7 +216,7 @@
             margin-bottom: 0.8rem;
         }
 
-        /* заметки - без смайликов */
+        /* заметки */
         .note-marker {
             background-color: #f3e0a8;
             color: #3e2a1a;
@@ -219,7 +226,6 @@
             margin-left: 6px;
             cursor: pointer;
             display: inline-block;
-            font-weight: normal;
         }
 
         /* кнопка наверх */
@@ -235,11 +241,12 @@
             cursor: pointer;
             display: none;
             font-size: 0.8rem;
+            z-index: 200;
         }
 
         @media (max-width: 550px) {
-            .settings-bar { gap: 0.6rem; }
-            .progress-area { flex-direction: column; align-items: stretch; }
+            .settings-bar { gap: 0.6rem; top: 66px; }
+            .progress-area { flex-direction: column; align-items: stretch; top: 112px; }
         }
     </style>
 </head>
@@ -388,7 +395,7 @@
     });
     goTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-    // заметки (без смайликов)
+    // заметки
     function saveNote(quote, noteText) {
         let notes = JSON.parse(localStorage.getItem('yfg_notes') || '{}');
         const key = 'note_' + Date.now() + '_' + Math.random();
