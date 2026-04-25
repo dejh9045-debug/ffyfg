@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Вход / YFG</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #f5f3ef;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+        .lock-card {
+            background: #ffffff;
+            border-radius: 32px;
+            padding: 2rem 1.5rem;
+            max-width: 360px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            border: 1px solid #e2dbd1;
+        }
+        .lock-card h1 {
+            font-size: 1.8rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            color: #4a3b2c;
+            margin-bottom: 1rem;
+        }
+        .lock-card p {
+            color: #6b5a48;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+        .lock-card input {
+            width: 100%;
+            padding: 0.8rem;
+            font-size: 1rem;
+            border: 1px solid #d6cdc0;
+            border-radius: 60px;
+            background: #fefcf9;
+            margin-bottom: 1rem;
+            text-align: center;
+            outline: none;
+        }
+        .lock-card input:focus {
+            border-color: #8b7355;
+        }
+        .lock-card button {
+            width: 100%;
+            background: transparent;
+            border: 1.5px solid #b8a68b;
+            padding: 0.7rem 1rem;
+            border-radius: 60px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #5e4b33;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .lock-card button:hover {
+            background: #e7dfd6;
+            border-color: #9c8870;
+        }
+        .error {
+            color: #b1624b;
+            font-size: 0.8rem;
+            margin-top: 0.8rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="lock-card">
+    <h1>YFG</h1>
+    <p>Введите пароль, чтобы войти</p>
+    <input type="password" id="passwordInput" placeholder="пароль" autocomplete="off">
+    <button id="submitBtn">Войти</button>
+    <div class="error" id="errorMsg">Неверный пароль</div>
+</div>
+
+<script>
+    const correctPassword = "19044";
+    const submitBtn = document.getElementById('submitBtn');
+    const passwordInput = document.getElementById('passwordInput');
+    const errorMsg = document.getElementById('errorMsg');
+
+    function checkPassword() {
+        const entered = passwordInput.value.trim();
+        if (entered === correctPassword) {
+            localStorage.setItem('yfg_unlocked', 'true');
+            window.location.href = 'index.html';
+        } else {
+            errorMsg.style.display = 'block';
+            passwordInput.value = '';
+            setTimeout(() => {
+                errorMsg.style.display = 'none';
+            }, 2000);
+        }
+    }
+
+    submitBtn.addEventListener('click', checkPassword);
+    passwordInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') checkPassword();
+    });
+</script>
+</body>
+</html>
