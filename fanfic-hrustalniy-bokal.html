@@ -11,7 +11,7 @@
             box-sizing: border-box;
         }
 
-        /*----- переменные (светлая тема по умолчанию) -----*/
+        /*----- переменные -----*/
         :root {
             --bg: #ffffff;
             --text: #1e1c19;
@@ -57,15 +57,11 @@
             padding: 0 1.2rem;
         }
 
-        /* шапка — sticky */
+        /* шапка — обычная */
         .header {
             background: var(--card);
             border-bottom: 1px solid var(--border);
             padding: 1rem 0 0.8rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
         }
         .header h1 {
             font-size: 1.8rem;
@@ -82,7 +78,7 @@
             font-size: 0.9rem;
         }
 
-        /* панель настроек — тоже sticky */
+        /* панель настроек — НЕ прилипает */
         .settings-bar {
             background: var(--card);
             border-bottom: 1px solid var(--border);
@@ -92,10 +88,6 @@
             justify-content: center;
             gap: 1rem;
             font-size: 0.85rem;
-            position: sticky;
-            top: 72px;
-            z-index: 99;
-            backdrop-filter: blur(10px);
         }
         .settings-group {
             display: flex;
@@ -121,7 +113,7 @@
             border-color: var(--accent);
         }
 
-        /* строка прогресса + закладка — ТОЖЕ СТИКИ */
+        /* строка прогресса + закладка — прилипает */
         .progress-area {
             margin: 0;
             padding: 0.5rem 1rem;
@@ -132,9 +124,8 @@
             gap: 1rem;
             flex-wrap: wrap;
             position: sticky;
-            top: 118px;
+            top: 0;
             z-index: 98;
-            backdrop-filter: blur(10px);
         }
         .progress-container {
             flex: 1;
@@ -245,8 +236,8 @@
         }
 
         @media (max-width: 550px) {
-            .settings-bar { gap: 0.6rem; top: 66px; }
-            .progress-area { flex-direction: column; align-items: stretch; top: 112px; }
+            .settings-bar { gap: 0.6rem; }
+            .progress-area { flex-direction: column; align-items: stretch; }
         }
     </style>
 </head>
@@ -308,7 +299,7 @@
         </div>
         <div id="chapter2" class="chapter">
             <h2>Глава 2</h2>
-            <p>Текст второй главы появится позже. Ты можешь выделять любые фразы в этой главе и добавлять заметки. Для этого просто выдели слово или предложение мышкой — появится кнопка «Добавить заметку».</p>
+            <p>Текст второй главы появится позже. Ты можешь выделять любые фразы в этой главе и добавлять заметки. Для этого просто выдели слово или предложение — появится кнопка «Добавить заметку».</p>
             <p>Все заметки сохраняются только у тебя в браузере.</p>
         </div>
     </div>
@@ -317,7 +308,7 @@
 <button class="go-top" id="goTop">Наверх</button>
 
 <script>
-    // 1. тема, шрифт, размер
+    // тема, шрифт, размер
     function applyTheme(theme) {
         document.body.classList.remove('dark', 'sepia');
         if (theme === 'dark') document.body.classList.add('dark');
@@ -362,28 +353,39 @@
         const winScroll = window.scrollY;
         const height = document.documentElement.scrollHeight - window.innerHeight;
         const scrolled = (winScroll / height) * 100;
-        document.getElementById('progressFill').style.width = scrolled + '%';
+        const fill = document.getElementById('progressFill');
+        if (fill) fill.style.width = scrolled + '%';
     }
     window.addEventListener('scroll', updateProgress);
     window.addEventListener('resize', updateProgress);
     setTimeout(updateProgress, 100);
 
     // закладки
-    document.getElementById('bookmarkBtn').addEventListener('click', () => {
-        const scrollPos = window.scrollY;
-        localStorage.setItem('yfg_bookmark', scrollPos);
-        const msg = document.getElementById('resumeMsg');
-        msg.innerText = 'Закладка сохранена';
-        setTimeout(() => msg.innerText = '', 2000);
-    });
+    const bookmarkBtn = document.getElementById('bookmarkBtn');
+    if (bookmarkBtn) {
+        bookmarkBtn.addEventListener('click', () => {
+            const scrollPos = window.scrollY;
+            localStorage.setItem('yfg_bookmark', scrollPos);
+            const msg = document.getElementById('resumeMsg');
+            if (msg) {
+                msg.innerText = 'Закладка сохранена';
+                setTimeout(() => msg.innerText = '', 2000);
+            }
+        });
+    }
     function restoreBookmark() {
         const saved = localStorage.getItem('yfg_bookmark');
         if (saved !== null) {
             const msgDiv = document.getElementById('resumeMsg');
-            msgDiv.innerHTML = '<button class="resume-btn" id="restoreBookmarkBtn">Вернуться к закладке</button>';
-            document.getElementById('restoreBookmarkBtn').addEventListener('click', () => {
-                window.scrollTo({ top: parseInt(saved), behavior: 'smooth' });
-            });
+            if (msgDiv) {
+                msgDiv.innerHTML = '<button class="resume-btn" id="restoreBookmarkBtn">Вернуться к закладке</button>';
+                const restoreBtn = document.getElementById('restoreBookmarkBtn');
+                if (restoreBtn) {
+                    restoreBtn.addEventListener('click', () => {
+                        window.scrollTo({ top: parseInt(saved), behavior: 'smooth' });
+                    });
+                }
+            }
         }
     }
     restoreBookmark();
@@ -391,9 +393,11 @@
     // кнопка наверх
     const goTopBtn = document.getElementById('goTop');
     window.addEventListener('scroll', () => {
-        goTopBtn.style.display = window.scrollY > 300 ? 'block' : 'none';
+        if (goTopBtn) goTopBtn.style.display = window.scrollY > 300 ? 'block' : 'none';
     });
-    goTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    if (goTopBtn) {
+        goTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    }
 
     // заметки
     function saveNote(quote, noteText) {
@@ -407,6 +411,7 @@
     function renderNoteMarkers() {
         const notes = JSON.parse(localStorage.getItem('yfg_notes') || '{}');
         const contentEl = document.getElementById('ficContent');
+        if (!contentEl) return;
         let html = contentEl.innerHTML;
         for (let key in notes) {
             const quote = notes[key].quote;
