@@ -11,7 +11,7 @@
             box-sizing: border-box;
         }
 
-        /*----- базовые переменные (светлая тема по умолчанию) -----*/
+        /*----- переменные (светлая тема по умолчанию) -----*/
         :root {
             --bg: #ffffff;
             --text: #1e1c19;
@@ -48,7 +48,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
             line-height: 1.6;
             transition: background 0.2s, color 0.2s;
-            padding-bottom: 4rem;
+            padding-bottom: 3rem;
         }
 
         .container {
@@ -66,7 +66,6 @@
             top: 0;
             z-index: 100;
             backdrop-filter: blur(10px);
-            background: rgba(var(--bg-rgb), 0.9);
         }
         .header h1 {
             font-size: 1.8rem;
@@ -233,31 +232,6 @@
             font-size: 0.8rem;
         }
 
-        /* плеер — аккуратный */
-        .music-player {
-            position: fixed;
-            bottom: 1rem;
-            left: 1rem;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 40px;
-            padding: 0.3rem 1rem;
-            font-size: 0.75rem;
-            display: flex;
-            gap: 0.6rem;
-            align-items: center;
-            z-index: 99;
-            color: var(--text);
-        }
-        .music-player button {
-            background: none;
-            border: none;
-            font-size: 1rem;
-            cursor: pointer;
-            color: var(--accent);
-            padding: 0;
-        }
-
         @media (max-width: 550px) {
             .settings-bar { gap: 0.6rem; }
             .progress-area { flex-direction: column; align-items: stretch; }
@@ -280,7 +254,7 @@
     </div>
     <div class="settings-group">Шрифт:
         <button class="font-btn" data-font="sans">Sans</button>
-        <button class="font-btn" data-font="serif">Serif</button>
+        <button class="font-btn" data-font="palatino">Palatino</button>
         <button class="font-btn" data-font="georgia">Georgia</button>
     </div>
     <div class="settings-group">Размер:
@@ -311,17 +285,12 @@
         </div>
         <div id="chapter2" class="chapter">
             <h2>Глава 2</h2>
-            <p>Продолжение истории. Шрифты: Sans, Serif и Georgia. Полоска прогресса работает.</p>
+            <p>Продолжение истории. Шрифты: Sans, Palatino, Georgia. Полоска прогресса работает. Закладки и заметки сохраняются в браузере.</p>
         </div>
     </div>
 </div>
 
 <button class="go-top" id="goTop">↑ Наверх</button>
-
-<div class="music-player">
-    <button id="playPauseBtn">▶</button>
-    <span>фоновая музыка</span>
-</div>
 
 <script>
     // 1. тема, шрифт, размер
@@ -336,8 +305,8 @@
     }
     function applyFont(font) {
         let fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif';
-        if (font === 'serif') fontFamily = 'Georgia, "Times New Roman", serif';
-        if (font === 'georgia') fontFamily = 'Georgia, serif';
+        if (font === 'palatino') fontFamily = '"Palatino Linotype", "Book Antiqua", Palatino, serif';
+        if (font === 'georgia') fontFamily = 'Georgia, "Times New Roman", serif';
         document.body.style.fontFamily = fontFamily;
         localStorage.setItem('yfg_font', font);
         document.querySelectorAll('.font-btn').forEach(btn => {
@@ -400,28 +369,6 @@
         goTopBtn.style.display = window.scrollY > 300 ? 'block' : 'none';
     });
     goTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-
-    // плеер
-    let audio = null;
-    let isPlaying = false;
-    const playBtn = document.getElementById('playPauseBtn');
-    function initAudio() {
-        audio = new Audio('music/theme.mp3');
-        audio.loop = true;
-        audio.volume = 0.3;
-        playBtn.addEventListener('click', () => {
-            if (!audio) initAudio();
-            if (isPlaying) {
-                audio.pause();
-                playBtn.innerText = '▶';
-            } else {
-                audio.play().catch(e => console.log('autoplay blocked'));
-                playBtn.innerText = '⏸';
-            }
-            isPlaying = !isPlaying;
-        });
-    }
-    playBtn.addEventListener('click', initAudio, { once: true });
 
     // заметки
     function saveNote(quote, noteText) {
