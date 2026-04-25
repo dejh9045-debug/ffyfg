@@ -125,15 +125,19 @@
             align-items: center;
             gap: 1rem;
             flex-wrap: wrap;
+            background: var(--card);
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            border: 1px solid var(--border);
         }
         .progress-container {
             flex: 1;
-            height: 4px;
+            height: 6px;
             background: var(--border);
             border-radius: 4px;
         }
         .progress-fill {
-            height: 4px;
+            height: 6px;
             background: var(--progress);
             width: 0%;
             border-radius: 4px;
@@ -155,7 +159,7 @@
         .resume-msg {
             text-align: center;
             font-size: 0.8rem;
-            margin-top: 0.3rem;
+            margin: 0.3rem 1rem;
         }
         .resume-btn {
             background: var(--accent);
@@ -205,7 +209,7 @@
             margin-bottom: 0.8rem;
         }
 
-        /* заметки */
+        /* заметки - без смайликов */
         .note-marker {
             background-color: #f3e0a8;
             color: #3e2a1a;
@@ -215,6 +219,7 @@
             margin-left: 6px;
             cursor: pointer;
             display: inline-block;
+            font-weight: normal;
         }
 
         /* кнопка наверх */
@@ -280,17 +285,29 @@
     <div class="fic-content" id="ficContent">
         <div id="chapter1" class="chapter">
             <h2>Глава 1</h2>
-            <p>Это пример текста для первой главы. Здесь будет твой фанфик. Ты можешь выделять любые фразы — появится кнопка для заметок.</p>
-            <p>Lorem ipsum odor amet, consectetuer adipiscing elit. Himenaeos suspendisse blandit ac luctus nisl nostra.</p>
+            <p>На часах было уже поздно, почти заполночь. Лунный свет мягко пробивался в окно отбрасывая тень юноши. Он шёл куда-то будучи одет в ночную рубаху. Если бы его увидел кто-то из прислуги, то блондина тут же отчитали и сослали свою в комнату, сказав постыдится, ведь быть в королевской семье и не соблюдать нормы приличия это позор самой семьи. В этой семье были рождены двойняшки, с детства они были разные как огонь и вода, что по характеру, что и внешности. Ходили слухи, что один из детей был подкинут или может даже куплен родителями, ведь те умирали с горя от потери близнеца.</p>
+            <p>В любом случае Нелли не слушала чьи-то слухи и спокойно росла занимаясь своими делами. Парень увидел, что из комнаты исходит свет и бесцеремонно заглянул в комнату.</p>
+            <p>— Сестрица, ты спишь? — белокурый мальчишка заметил девушку, которая сидит за письменным столом и читает книгу.</p>
+            <p>Она помотала головой и продолжила читать, а юный принц зашёл внутрь.</p>
+            <p>— Скоро близится наше совершеннолетие, тебе страшно? — при свете свечей можно было заметить прекрасные янтарные, можно сказать почти жёлтые в таком освещении, глаза Демиана. Он был словно адонис, что решил перевоплотился в теле обычного смертного.</p>
+            <p>— Я не знаю что и думать.. Я не хочу переезжать в чужой дом — голос девушки прозвучал печально. Она закрыла книгу и глянула на брата. Её внешность была ничуть не хуже брату. У неё были шелковистые рыжие волосы и серо-голубые, но уставшие из-за бессонницы глаза — Я слышала из служанок, что он Король в соседнем королевстве..</p>
+            <p>Демиан усмехнулся и потрепал девушку по волосам от чего та отпрянула и нахмурив брови укоризненно смотрела на брата.</p>
+            <p>— Зачем думать об этом? Давай сбежим! Представляешь какой мир будет открыт, если мы решим не следовать правилам, — он встал и взял в руки указку для карты звёздного неба — Мы сможем возродить эру пиратства! — он начал игриво драться с воздухом, а после уронил указку и достал из кармана платок, который вкусно пах какими-то цветами — или может мы отправимся в далёкие края и будем исследовать землю на лошадях.</p>
+            <p>Нелли подняла указку и аккуратно положила на место, где она лежала, а после отобрала у блондина платок. Рассмотрела его и увидела инициалы "А.Т" и с неким воодушевлением произнесла:</p>
+            <p>— И мы возьмём туда с собой и его!</p>
+            <p>Кажется юная леди поняла о чем говорит парень и ответила ему:</p>
+            <p>— Демиан.. — она вздохнула и с некой жалостью посмотрела на него — Ты снова к нему ходил? Его могут казнить, если кто-то узнает.</p>
+            <p>Здесь будет продолжение твоего фанфика...</p>
         </div>
         <div id="chapter2" class="chapter">
             <h2>Глава 2</h2>
-            <p>Продолжение истории. Шрифты: Sans, Palatino, Georgia. Полоска прогресса работает. Закладки и заметки сохраняются в браузере.</p>
+            <p>Текст второй главы появится позже. Ты можешь выделять любые фразы в этой главе и добавлять заметки. Для этого просто выдели слово или предложение мышкой — появится кнопка «Добавить заметку».</p>
+            <p>Все заметки сохраняются только у тебя в браузере.</p>
         </div>
     </div>
 </div>
 
-<button class="go-top" id="goTop">↑ Наверх</button>
+<button class="go-top" id="goTop">Наверх</button>
 
 <script>
     // 1. тема, шрифт, размер
@@ -342,20 +359,21 @@
     }
     window.addEventListener('scroll', updateProgress);
     window.addEventListener('resize', updateProgress);
+    setTimeout(updateProgress, 100);
 
     // закладки
     document.getElementById('bookmarkBtn').addEventListener('click', () => {
         const scrollPos = window.scrollY;
         localStorage.setItem('yfg_bookmark', scrollPos);
         const msg = document.getElementById('resumeMsg');
-        msg.innerText = '✓ Закладка сохранена';
+        msg.innerText = 'Закладка сохранена';
         setTimeout(() => msg.innerText = '', 2000);
     });
     function restoreBookmark() {
         const saved = localStorage.getItem('yfg_bookmark');
         if (saved !== null) {
             const msgDiv = document.getElementById('resumeMsg');
-            msgDiv.innerHTML = `<button class="resume-btn" id="restoreBookmarkBtn">Вернуться к закладке</button>`;
+            msgDiv.innerHTML = '<button class="resume-btn" id="restoreBookmarkBtn">Вернуться к закладке</button>';
             document.getElementById('restoreBookmarkBtn').addEventListener('click', () => {
                 window.scrollTo({ top: parseInt(saved), behavior: 'smooth' });
             });
@@ -370,13 +388,13 @@
     });
     goTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-    // заметки
+    // заметки (без смайликов)
     function saveNote(quote, noteText) {
         let notes = JSON.parse(localStorage.getItem('yfg_notes') || '{}');
         const key = 'note_' + Date.now() + '_' + Math.random();
         notes[key] = { quote: quote, text: noteText, scroll: window.scrollY };
         localStorage.setItem('yfg_notes', JSON.stringify(notes));
-        alert('Заметка сохранена!');
+        alert('Заметка сохранена');
         location.reload();
     }
     function renderNoteMarkers() {
@@ -386,7 +404,7 @@
         for (let key in notes) {
             const quote = notes[key].quote;
             if (quote && html.includes(quote)) {
-                const marker = `<span class="note-marker" data-note="${key}" title="${notes[key].text}">📌 заметка</span>`;
+                const marker = '<span class="note-marker" data-note="' + key + '" title="' + notes[key].text + '">заметка</span>';
                 html = html.replace(quote, quote + marker);
             }
         }
@@ -406,7 +424,7 @@
             if(existing) existing.remove();
             let popup = document.createElement('div');
             popup.id = 'notePopup';
-            popup.innerText = '✏️ Добавить заметку';
+            popup.innerText = 'Добавить заметку';
             popup.style.position = 'absolute';
             popup.style.background = 'var(--accent)';
             popup.style.color = 'white';
