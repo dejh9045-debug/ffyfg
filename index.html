@@ -179,6 +179,12 @@
     </style>
 </head>
 <body>
+    <script>
+    // проверка пароля при входе на главную
+    if (localStorage.getItem('yfg_unlocked') !== 'true') {
+        window.location.href = 'lock.html';
+    }
+</script>
 <div class="container">
     <div class="site-title">
         <h1>YFG - фанфики</h1>
